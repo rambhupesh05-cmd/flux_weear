@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Flux - Premium Streetwear Design System
+   Black & White Editorial Fashion Theme
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Core palette - Pure black & white editorial */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 2%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 8%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 0% 30%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 15%;
+    --input: 0 0% 10%;
+    --ring: 0 0% 100%;
+
+    --radius: 0px;
+
+    /* Custom design tokens */
+    --flux-white: 0 0% 100%;
+    --flux-black: 0 0% 0%;
+    --flux-gray-100: 0 0% 95%;
+    --flux-gray-200: 0 0% 80%;
+    --flux-gray-300: 0 0% 60%;
+    --flux-gray-400: 0 0% 40%;
+    --flux-gray-500: 0 0% 20%;
+    --flux-gray-600: 0 0% 12%;
+    --flux-gray-700: 0 0% 8%;
+    --flux-gray-800: 0 0% 5%;
+    --flux-gray-900: 0 0% 2%;
+
+    /* Typography scale */
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Space Grotesk', sans-serif;
+    
+    /* Transitions */
+    --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-medium: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 2%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 8%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 0% 30%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 15%;
+    --input: 0 0% 10%;
+    --ring: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+}
+
+@layer components {
+  /* Editorial button styles */
+  .btn-editorial {
+    @apply relative overflow-hidden border border-primary bg-transparent text-primary px-8 py-4 uppercase tracking-widest text-sm font-medium;
+    transition: all var(--transition-medium);
+  }
+
+  .btn-editorial::before {
+    content: '';
+    @apply absolute inset-0 bg-primary;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-medium);
+  }
+
+  .btn-editorial:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .btn-editorial:hover {
+    @apply text-primary-foreground;
+  }
+
+  .btn-editorial span {
+    @apply relative z-10;
+  }
+
+  /* Filled editorial button */
+  .btn-editorial-filled {
+    @apply relative overflow-hidden border border-primary bg-primary text-primary-foreground px-8 py-4 uppercase tracking-widest text-sm font-medium;
+    transition: all var(--transition-medium);
+  }
+
+  .btn-editorial-filled::before {
+    content: '';
+    @apply absolute inset-0 bg-background;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-medium);
+  }
+
+  .btn-editorial-filled:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .btn-editorial-filled:hover {
+    @apply text-foreground;
+  }
+
+  .btn-editorial-filled span {
+    @apply relative z-10;
+  }
+
+  /* Text reveal animation */
+  .text-reveal {
+    @apply overflow-hidden;
+  }
+
+  .text-reveal span {
+    @apply inline-block;
+    transform: translateY(100%);
+    animation: textReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes textReveal {
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Cinematic overlay */
+  .cinematic-overlay {
+    background: linear-gradient(
+      to bottom,
+      hsl(var(--flux-black) / 0.3) 0%,
+      hsl(var(--flux-black) / 0) 30%,
+      hsl(var(--flux-black) / 0) 70%,
+      hsl(var(--flux-black) / 0.5) 100%
+    );
+  }
+
+  /* Product card hover */
+  .product-card {
+    @apply relative overflow-hidden;
+  }
+
+  .product-card img {
+    transition: transform var(--transition-slow), filter var(--transition-slow);
+  }
+
+  .product-card:hover img {
+    transform: scale(1.05);
+    filter: brightness(0.9);
+  }
+
+  /* Editorial link underline */
+  .link-editorial {
+    @apply relative inline-block;
+  }
+
+  .link-editorial::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-px bg-current;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-medium);
+  }
+
+  .link-editorial:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground;
+  }
+
+  /* Form inputs */
+  .input-editorial {
+    @apply w-full bg-transparent border-b border-muted px-0 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-foreground;
+    transition: border-color var(--transition-fast);
+  }
+}
+
+@layer utilities {
+  .text-display-xl {
+    @apply text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter;
+  }
+
+  .text-display-lg {
+    @apply text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter;
+  }
+
+  .text-display-md {
+    @apply text-3xl md:text-4xl lg:text-5xl font-light tracking-tight;
+  }
+
+  .text-editorial {
+    @apply text-xs uppercase tracking-[0.3em] font-medium;
+  }
+
+  .text-body-lg {
+    @apply text-lg md:text-xl leading-relaxed;
+  }
+
+  .animation-delay-100 {
+    animation-delay: 0.1s;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 0.5s;
+  }
+
+  /* 3D perspective utilities */
+  .perspective-500 {
+    perspective: 500px;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+}
