@@ -13,7 +13,7 @@ function LogoReveal({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 3000); // Show intro for 3 seconds
+    }, 3500); // Show intro for 3.5 seconds
     return () => clearTimeout(timer);
   }, [onComplete]);
 
@@ -152,16 +152,33 @@ function LogoReveal({ onComplete }: { onComplete: () => void }) {
   );
 }
 
-// Store entry video animation
+// Store entry video animation with fallback
 function VideoIntro({ onComplete }: { onComplete: () => void }) {
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.play().catch(console.error);
+      videoRef.current.play().catch(() => {
+        setVideoError(true);
+        onComplete();
+      });
     }
   }, []);
+
+  useEffect(() => {
+    if (!videoLoaded && !videoError) {
+      const timer = setTimeout(() => {
+        onComplete();
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [videoLoaded, videoError, onComplete]);
+
+  if (videoError) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -176,6 +193,10 @@ function VideoIntro({ onComplete }: { onComplete: () => void }) {
         className={`h-full w-full object-cover ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
         onCanPlay={() => setVideoLoaded(true)}
         onEnded={onComplete}
+        onError={() => {
+          setVideoError(true);
+          onComplete();
+        }}
         muted
         playsInline
         autoPlay
@@ -183,7 +204,6 @@ function VideoIntro({ onComplete }: { onComplete: () => void }) {
         <source src={storeEntryVideo} type="video/mp4" />
       </video>
       
-      {/* Video overlay gradient */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"
         initial={{ opacity: 0 }}
@@ -191,7 +211,6 @@ function VideoIntro({ onComplete }: { onComplete: () => void }) {
         transition={{ delay: 0.5 }}
       />
       
-      {/* Enter store text */}
       <motion.div
         className="absolute bottom-16 left-1/2 -translate-x-1/2 text-center"
         initial={{ opacity: 0, y: 20 }}
@@ -220,10 +239,9 @@ function VideoIntro({ onComplete }: { onComplete: () => void }) {
         </div>
       </motion.div>
       
-      {/* Skip button */}
       <motion.button
         onClick={onComplete}
-        className="absolute bottom-8 right-8 text-white/50 hover:text-white text-sm uppercase tracking-[0.2em] transition-colors"
+        className="absolute bottom-8 right-8 text-white/50 hover:text-white text-sm uppercase tracking-[0.2em] transition-colors cursor-pointer"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
